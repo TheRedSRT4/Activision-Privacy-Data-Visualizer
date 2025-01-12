@@ -329,11 +329,9 @@
           } else {
             logProgress('All relevant tables processed.');
             console.log('Extracted Data:', extractedData);
-            setLoaderState('complete'); // Show success state
-            closeLoaderButton.style.display = 'block'; // Show close button
 
-            // Proceed to send data to backend
-            sendToGoogleSheets(extractedData);
+            // Call createAndUploadSheet to upload data
+            createAndUploadSheet(extractedData.flat());
           }
         }
 
@@ -341,20 +339,20 @@
       }
 
       function createAndUploadSheet(extractedData) {
-        fetch('/api/createSheet', {
+        fetch('https://activision-privacy-data-visualizer.vercel.app/api/createSheet.js', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            data: extractedData, 
-            sheetName: 'Activision-Privacy-Data-Visualizer',
+            data: extractedData,
+            sheetName: 'Activision-Privacy-Data-Visualizer', // Optional: Name of the new sheet
           }),
         })
           .then((response) => response.json())
           .then((result) => {
             console.log('Spreadsheet created:', result);
-            logProgress('Spreadsheet created and data uploaded!');
+            logProgress('Spreadsheet created and data uploaded successfully!');
           })
           .catch((error) => {
             console.error('Error creating spreadsheet:', error);
