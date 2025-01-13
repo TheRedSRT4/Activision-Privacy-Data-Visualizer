@@ -1,14 +1,14 @@
 const { google } = require('googleapis');
 
 export default async function handler(req, res) {
-  // Add CORS headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://theredsrt4.github.io'); // Allow your GitHub Pages domain
+  // Add CORS headers to allow cross-origin requests
+  res.setHeader('Access-Control-Allow-Origin', 'https://theredsrt4.github.io'); // Replace with your GitHub Pages domain
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // Handle OPTIONS preflight requests
+  // Handle OPTIONS preflight request
   if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // Return 200 for preflight requests
+    return res.status(200).end(); // Respond OK to preflight requests
   }
 
   if (req.method === 'POST') {
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       // Step 1: Create a new spreadsheet
       const spreadsheetResponse = await drive.files.create({
         resource: {
-          name: sheetName || 'Activision-Privacy-Data-Visualizer',
+          name: sheetName || 'New Spreadsheet',
           mimeType: 'application/vnd.google-apps.spreadsheet',
         },
         fields: 'id',
@@ -45,12 +45,12 @@ export default async function handler(req, res) {
         resource: { values: data },
       });
 
-      res.status(200).json({ message: 'Spreadsheet created and data added!', spreadsheetId });
+      return res.status(200).json({ message: 'Spreadsheet created and data added!', spreadsheetId });
     } catch (error) {
       console.error('Error creating spreadsheet or writing data:', error);
-      res.status(500).json({ error: 'Failed to create spreadsheet or write data.' });
+      return res.status(500).json({ error: 'Failed to create spreadsheet or write data.' });
     }
   } else {
-    res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 }
