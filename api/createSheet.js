@@ -21,8 +21,11 @@ export default async function handler(req, res) {
       },
       scopes: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive'],
     });
+
+
     const private_key = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
-    console.log(private_key);
+
+
     const drive = google.drive({ version: 'v3', auth });
     const sheets = google.sheets({ version: 'v4', auth });
 
@@ -45,7 +48,7 @@ export default async function handler(req, res) {
         valueInputOption: 'RAW',
         resource: { values: data },
       });
-
+      console.log(private_key);
       return res.status(200).json({ message: 'Spreadsheet created and data added!', spreadsheetId });
     } catch (error) {
       console.error('Error creating spreadsheet or writing data:', error);
