@@ -2,7 +2,7 @@ const { google } = require('googleapis');
 
 export default async function handler(req, res) {
   // Add CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify your domain
+  res.setHeader('Access-Control-Allow-Origin', 'https://theredsrt4.github.io'); // Allow your GitHub Pages domain
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
